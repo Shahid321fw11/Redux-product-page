@@ -14,10 +14,12 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_PRODUCTS:
+      // console.log("Reducer - FETCH_PRODUCTS:", action.payload);
       return { ...state, products: action.payload };
     case FETCH_PRODUCT_BY_ID:
       return { ...state, selectedProduct: action.payload };
     case ADD_PRODUCT:
+      console.log("Adding product:", action.payload); // Debugging line
       return { ...state, products: [...state.products, action.payload] };
     case UPDATE_PRODUCT:
       return {

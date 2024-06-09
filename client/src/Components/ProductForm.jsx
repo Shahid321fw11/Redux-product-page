@@ -4,7 +4,7 @@ import { addProduct } from "../redux/action";
 import { Typography, TextField, Button, Grid, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const ProductForm = ({ history }) => {
+const ProductForm = () => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");

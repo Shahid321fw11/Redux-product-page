@@ -13,12 +13,8 @@ import {
 } from "@mui/material";
 
 const ProductList = () => {
-  const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  // console.log("Products in list:", products);
 
   return (
     <div>

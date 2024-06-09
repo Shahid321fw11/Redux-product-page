@@ -7,15 +7,20 @@ export const ADD_PRODUCT = "ADD_PRODUCT";
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 
 export const fetchProducts = () => async (dispatch) => {
-  const response = await axios.get("/product.json");
-  dispatch({ type: FETCH_PRODUCTS, payload: response.data });
+  try {
+    const response = await axios.get("/product.json");
+    // console.log("Products fetched:", response.data);
+    dispatch({ type: FETCH_PRODUCTS, payload: response.data });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
 };
 
 export const fetchProductById = (id) => async (dispatch) => {
   const response = await axios.get("/product.json");
-  console.log("res", response);
+  // console.log("res", response);
   const product = response.data.find((p) => p.id === parseInt(id));
-  console.log("pro", product);
+  // console.log("pro", product);
   dispatch({ type: FETCH_PRODUCT_BY_ID, payload: product });
 };
 
