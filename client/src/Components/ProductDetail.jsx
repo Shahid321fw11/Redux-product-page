@@ -8,7 +8,6 @@ import {
   CircularProgress,
   Grid,
   Card,
-  CardContent,
   CardMedia,
   Button,
   TextField,
@@ -97,6 +96,13 @@ const ProductDetail = () => {
             <Typography variant="body2">
               Category: {product.category}
             </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleEditClick}
+            >
+              Edit
+            </Button>
           </Paper>
         </Grid>
       </Grid>
