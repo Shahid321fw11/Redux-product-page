@@ -12,7 +12,7 @@ const Header = () => {
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link href="/" underline="none" color="inherit">
-              Home
+              AgentAnalytics.AI
             </Link>
           </Typography>
           <Button color="inherit">

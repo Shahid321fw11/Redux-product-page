@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProductById, updateProduct } from "../redux/action";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Typography,
   Paper,
@@ -11,11 +11,18 @@ import {
   CardMedia,
   Button,
   TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Container,
+  Box,
 } from "@mui/material";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const product = useSelector((state) => state.selectedProduct);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -50,6 +57,7 @@ const ProductDetail = () => {
   const handleCancelClick = () => {
     setIsEditing(false);
   };
+
   const handleSaveClick = (e) => {
     e.preventDefault();
     const updatedProduct = {
@@ -69,111 +77,137 @@ const ProductDetail = () => {
     }));
   };
 
-  if (!product) return <CircularProgress />;
-
+  if (!product) {
+    return (
+      <Container>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "80vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </Container>
+    );
+  }
   return (
-    <div>
-      <Typography variant="h3" gutterBottom>
-        {product.title}
-      </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <Card sx={{ maxWidth: 400 }}>
-            <CardMedia
-              component="img"
-              height="auto"
-              image={product.image}
-              alt={product.title}
-            />
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ padding: 2 }}>
-            <Typography variant="h5">Price: ${product.price}</Typography>
-            <Typography variant="body1" gutterBottom>
-              {product.description}
-            </Typography>
-            <Typography variant="body2">
-              Category: {product.category}
-            </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleEditClick}
-            >
-              Edit
-            </Button>
-          </Paper>
-        </Grid>
-      </Grid>
-
-      {isEditing && (
-        <Grid container justifyContent="center" spacing={2}>
+    <Container>
+      <Box sx={{ textAlign: "center", m: 4 }}>
+        <Typography variant="h3" gutterBottom>
+          {product.title}
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <Card sx={{ maxWidth: 400, mx: "auto" }}>
+              <CardMedia
+                component="img"
+                height="auto"
+                image={product.image}
+                alt={product.title}
+              />
+            </Card>
+          </Grid>
           <Grid item xs={12} md={6}>
             <Paper sx={{ padding: 2 }}>
-              <Typography variant="h4" gutterBottom>
-                Edit Product
+              <Typography variant="h5">Price: ${product.price}</Typography>
+              <Typography variant="body1" gutterBottom>
+                {product.description}
               </Typography>
-              <form onSubmit={handleSaveClick}>
-                <TextField
-                  label="Title"
-                  name="title"
-                  value={formValues.title}
-                  onChange={handleChange}
-                  fullWidth
-                  margin="normal"
-                />
-                <TextField
-                  label="Price"
-                  name="price"
-                  value={formValues.price}
-                  onChange={handleChange}
-                  type="number"
-                  fullWidth
-                  margin="normal"
-                />
-                <TextField
-                  label="Description"
-                  name="description"
-                  value={formValues.description}
-                  onChange={handleChange}
-                  multiline
-                  rows={4}
-                  fullWidth
-                  margin="normal"
-                />
-                <TextField
-                  label="Category"
-                  name="category"
-                  value={formValues.category}
-                  onChange={handleChange}
-                  fullWidth
-                  margin="normal"
-                />
-                <TextField
-                  label="Image URL"
-                  name="image"
-                  value={formValues.image}
-                  onChange={handleChange}
-                  fullWidth
-                  margin="normal"
-                />
-                <Button type="submit" variant="contained" color="primary">
-                  Save
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleCancelClick}
-                >
-                  Cancel
-                </Button>
-              </form>
+              <Typography variant="body2">
+                Category: {product.category}
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleEditClick}
+                sx={{ mr: 2, mt: 2 }}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => navigate(-1)}
+                sx={{ mt: 2 }}
+              >
+                Back
+              </Button>
             </Paper>
           </Grid>
         </Grid>
-      )}
-    </div>
+      </Box>
+
+      <Dialog
+        open={isEditing}
+        onClose={handleCancelClick}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>Edit Product</DialogTitle>
+        <DialogContent>
+          <form onSubmit={handleSaveClick}>
+            <TextField
+              label="Title"
+              name="title"
+              value={formValues.title}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Price"
+              name="price"
+              value={formValues.price}
+              onChange={handleChange}
+              type="number"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Description"
+              name="description"
+              value={formValues.description}
+              onChange={handleChange}
+              multiline
+              rows={4}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Category"
+              name="category"
+              value={formValues.category}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Image URL"
+              name="image"
+              value={formValues.image}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <DialogActions>
+              <Button type="submit" variant="contained" color="primary">
+                Save
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleCancelClick}
+              >
+                Cancel
+              </Button>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </Container>
   );
 };
 

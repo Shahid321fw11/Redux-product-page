@@ -9,33 +9,57 @@ import {
   Button,
   Typography,
   Grid,
+  Container,
+  Box,
 } from "@mui/material";
 
 const ProductList = () => {
   const products = useSelector((state) => state.products);
-  // console.log("Products in list:", products);
 
   return (
-    <div>
-      <h1>Product List</h1>
-      <Grid container spacing={2}>
+    <Container>
+      <Box sx={{ textAlign: "center", m: 4 }}>
+        <Typography variant="h2" component="h1" sx={{ fontWeight: "bold" }}>
+          Product List
+        </Typography>
+      </Box>
+      <Grid container spacing={4}>
         {products.map((product) => (
           <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-            <Card sx={{ maxWidth: 345 }}>
+            <Card
+              sx={{
+                maxWidth: 345,
+                minHeight: 400,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
               <CardMedia
                 component="img"
-                height="194"
+                sx={{ objectFit: "contain", height: 194 }}
                 image={product.image}
                 alt={product.title}
+                loading="lazy"
               />
-              <CardContent>
-                <Typography variant="caption" display="block">
-                  {product.price}
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography variant="caption" display="block" gutterBottom>
+                  ${product.price}
                 </Typography>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography gutterBottom variant="h6" component="div" noWrap>
                   {product.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
                   {product.description}
                 </Typography>
               </CardContent>
@@ -52,7 +76,7 @@ const ProductList = () => {
           </Grid>
         ))}
       </Grid>
-    </div>
+    </Container>
   );
 };
 
